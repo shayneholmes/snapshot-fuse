@@ -1,0 +1,6 @@
+# Ignore builds
+snapshot-fuse.exe
+snapshot-fuse
+snapshot-fuse.exe~
+snapshot-fuse~
+snapshot_fuse_*
