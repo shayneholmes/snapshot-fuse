@@ -68,7 +68,9 @@ func (self *Dpfs) Init() {
 			log.WithError(err).Fatal("problem reading row")
 		}
 
-		_, _, _, date, sizeStr, path := record[0], record[1], record[2], record[3], record[4], record[5]
+		snap, _, _, date, sizeStr, path := record[0], record[1], record[2], record[3], record[4], record[5]
+
+		path = filepath.Join(snap, path)
 
 		size, err := strconv.ParseInt(sizeStr, 10, 64)
 		if err != nil {
