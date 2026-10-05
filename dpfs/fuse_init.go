@@ -68,7 +68,7 @@ func (self *Dpfs) Init() {
 			log.WithError(err).Fatal("problem reading row")
 		}
 
-		snap, _, _, date, sizeStr, path := record[0], record[1], record[2], record[3], record[4], record[5]
+		snap, rev, revdate, _ /* date */, sizeStr, path := record[0], record[1], record[2], record[3], record[4], record[5]
 
 		path = filepath.Join(snap, path)
 
@@ -78,13 +78,16 @@ func (self *Dpfs) Init() {
 		}
 
 		{
+			saferevdate := revdate[:10]
 			dir, basename := filepath.Split(path)
 			dir = strings.TrimSuffix(dir, "/")
+			extension := filepath.Ext(basename)
+			baseWithoutDot := basename[:len(basename)-len(extension)]
 
 			// The last component of the path is the file's basename
 			filesByPath[dir] = append(filesByPath[dir],
 				&Entry{
-					Basename: fmt.Sprintf("%s-%s", basename, date),
+					Basename: fmt.Sprintf("%s-%s-rev-%s%s", baseWithoutDot, saferevdate, rev, extension),
 					Size:     size,
 					Filetype: filetypeFile,
 				})
